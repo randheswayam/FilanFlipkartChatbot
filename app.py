@@ -14,12 +14,6 @@ from src.utils import (
     search_products_sql,
     extract_constraints
 )
-try:
-    import semantic_router
-    print("DEBUG: semantic_router version:", getattr(semantic_router, "__version__", "unknown"))
-    print("DEBUG: semantic_router path:", getattr(semantic_router, "__file__", "unknown"))
-except Exception as e:
-    print("DEBUG: Failed to import semantic_router:", e)
 
 from src.router import route_query
 from src.retriever import init_and_index_db, query_faqs, query_products

@@ -1,5 +1,16 @@
 import os
-from semantic_router import Route, RouteLayer
+from semantic_router import Route
+try:
+    # Try the newer 1.0+ import (e.g. on Streamlit Cloud with Python 3.14)
+    from semantic_router.routers import SemanticRouter as RouteLayer
+except ImportError:
+    try:
+        # Fallback to older 0.0.x import
+        from semantic_router import RouteLayer
+    except ImportError:
+        # Fallback to layer module import
+        from semantic_router.layer import RouteLayer
+
 from semantic_router.encoders import HuggingFaceEncoder
 
 # Global variables for caching singleton router
