@@ -100,7 +100,7 @@ def search_products_keyword(query: str, limit: int = 5) -> pd.DataFrame:
         
     mask = df.apply(
         lambda row: all(
-            t in get_words(row['title']) or get_words(row['brand']) for t in terms
+            t in get_words(row['title']) or t in get_words(row['brand']) for t in terms
         ), axis=1
     )
     results = df[mask].drop_duplicates(subset=['title', 'brand', 'price'])
@@ -116,10 +116,10 @@ def search_products_sql(sql_where_clause: str, limit: int = 5) -> pd.DataFrame:
     query = f"SELECT * FROM products WHERE {clean_where} LIMIT {limit}"
     try:
         result_df = sqldf(query, locals())
-        return result_df
+        return result_df # type: ignore
     except Exception as e:
         err_df = pd.DataFrame(columns=products.columns)
-        err_df['error'] = [str(e)]
+        err_df.loc[0, 'error'] = str(e)
         return err_df
 
 def extract_constraints(query_text: str) -> dict:
@@ -166,4 +166,4 @@ def extract_constraints(query_text: str) -> dict:
         else:
             where = brand_filter
             
-    return where if where else None
+    return where if where else None # type: ignore

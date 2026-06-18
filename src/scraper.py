@@ -102,8 +102,9 @@ def scrape_flipkart_live(search_term: str, limit: int = 5) -> pd.DataFrame:
                     
                 # Total Ratings Count (class 'Wphh3N')
                 try:
-                    total_ratings_text = driver.find_element(By.CLASS_NAME, 'Wphh3N').text.split(' ')[0]
-                    total_ratings = int(total_ratings_text.replace(',', ''))
+                    total_ratings_text = driver.find_element(By.CLASS_NAME, 'Wphh3N').text
+                    ratings_num = "".join(re.findall(r'\d+', total_ratings_text.split(' ')[0]))
+                    total_ratings = int(ratings_num) if ratings_num else 0
                 except Exception:
                     total_ratings = 0
                     
